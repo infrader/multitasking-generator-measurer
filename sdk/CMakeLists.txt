@@ -22,11 +22,3 @@ target_compile_definitions(apm32f0xx_sdk PUBLIC
 APM32F072xB
 USE_STDPERIPH_DRIVER
 )
-
-target_compile_options(apm32f0xx_sdk PUBLIC
--mcpu=cortex-m0plus
--mthumb
--mfloat-abi=soft
--ffunction-sections
--fdata-sections
-)
