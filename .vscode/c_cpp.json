@@ -1,0 +1,16 @@
+{
+    "configurations": [{
+        "name": "ARM",
+        "includePath": [
+            "${workspaceFolder}/src",
+            "${workspaceFolder}/sdk/Libraries/APM32F0xx_StdPeriphDriver/inc",
+            "${workspaceFolder}/sdk/Libraries/Device/Geehy/APM32F0xx/Include",
+            "${workspaceFolder}/sdk/Libraries/CMSIS/Include"
+        ],
+        "defines": ["APM32F072xB"],
+        "cStandard": "c11",
+        "cppStandard": "c++17",
+        "intelliSenseMode": "linux-gcc-arm"
+    }],
+    "version": 4
+}

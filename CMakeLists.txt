@@ -14,3 +14,8 @@ target_link_libraries(run PRIVATE apm32f0xx_sdk)
 
 target_link_options(run PRIVATE -T ${LINKER} -nostartfiles  -Wl,-Map=${CMAKE_BINARY_DIR}/output.map)  
 
+add_custom_command(TARGET run POST_BUILD COMMAND arm-none-eabi-objcopy -O ihex 
+    $<TARGET_FILE:run> ${CMAKE_BINARY_DIR}/run.hex
+    COMMAND arm-none-eabi-objcopy -O binary $<TARGET_FILE:run> ${CMAKE_BINARY_DIR}/run.bin
+    COMMAND arm-none-eabi-size $<TARGET_FILE:run>
+    )
