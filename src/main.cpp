@@ -19,4 +19,4 @@ int main(){
         GPIO_ClearBit(GPIOE, GPIO_PIN_5);
         for(volatile uint32_t i = 0; i < 500000; ++i);
     }
-}
+} 

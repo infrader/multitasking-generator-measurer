@@ -9,12 +9,15 @@ add_subdirectory(sdk)
 set(STARTUP ${CMAKE_SOURCE_DIR}/sdk/Libraries/Device/Geehy/APM32F0xx/Source/gcc/startup_apm32f072.S)
 set(LINKER ${CMAKE_SOURCE_DIR}/sdk/Libraries/Device/Geehy/APM32F0xx/Source/gcc/gcc_APM32F07xx8.ld)
 
+add_library(uart STATIC ${CMAKE_SOURCE_DIR}/src/logger.cpp)
+target_include_directories(uart PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
 add_executable(run src/main.cpp ${STARTUP})
-target_link_libraries(run PRIVATE apm32f0xx_sdk)
+target_link_libraries(run PRIVATE apm32f0xx_sdk uart)
 
 target_link_options(run PRIVATE -T ${LINKER} -nostartfiles  -Wl,-Map=${CMAKE_BINARY_DIR}/output.map)  
 
-add_custom_command(TARGET run POST_BUILD COMMAND arm-none-eabi-objcopy -O ihex 
+add_custom_command(TARGET run POST_BUILD COMMAND arm-none-eabi-objcopy -O ihex #Post build for dfu 
     $<TARGET_FILE:run> ${CMAKE_BINARY_DIR}/run.hex
     COMMAND arm-none-eabi-objcopy -O binary $<TARGET_FILE:run> ${CMAKE_BINARY_DIR}/run.bin
     COMMAND arm-none-eabi-size $<TARGET_FILE:run>
