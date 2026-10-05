@@ -6,6 +6,5 @@
 
 namespace logger{
     void logger_init();
-
-
+    void log_tx(const char* log);
 };

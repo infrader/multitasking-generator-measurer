@@ -33,3 +33,8 @@ void logger::logger_init(){
     USART_Config(USART1, &cfg_u);   
     USART_Enable(USART1);
 };
+
+void logger::log_tx(const char* log){
+
+    
+};
