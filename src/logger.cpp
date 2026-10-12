@@ -35,6 +35,9 @@ void logger::logger_init(){
 };
 
 void logger::log_tx(const char* log){
-
-    
+    while(*log != '\0'){
+        while(!USART_ReadStatusFlag(USART1, USART_FLAG_TXBE));
+            USART_TxData(USART1, *log);
+            ++log;
+    }
 };
