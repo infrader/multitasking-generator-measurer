@@ -19,7 +19,7 @@ int main(){
     RCM_EnableAHBPeriphClock(RCM_AHB_PERIPH_GPIOE);
     GPIO_Config_T cfg;
     GPIO_ConfigStructInit(&cfg);
-    cfg.pin = GPIO_PIN_6;
+    cfg.pin = GPIO_PIN_5;
     cfg.mode = GPIO_MODE_OUT;
     cfg.speed = GPIO_SPEED_2MHz;
     cfg.pupd = GPIO_PUPD_NO;
@@ -36,10 +36,10 @@ int main(){
         uint32_t interval_temp = interval[mode - 1];
         if((millis() - last_toggle) >= interval_temp){
             last_toggle += interval_temp;
-            if(GPIO_ReadOutputBit(GPIOE, GPIO_PIN_6)){
-                GPIO_ClearBit(GPIOE, GPIO_PIN_6);
+            if(GPIO_ReadOutputBit(GPIOE, GPIO_PIN_5)){
+                GPIO_ClearBit(GPIOE, GPIO_PIN_5);
             }else{
-                GPIO_SetBit(GPIOE, GPIO_PIN_6);
+                GPIO_SetBit(GPIOE, GPIO_PIN_5);
             }
         }
     }
