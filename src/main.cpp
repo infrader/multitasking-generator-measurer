@@ -1,7 +1,8 @@
 #include "apm32f072xx.h"
 #include "apm32f0xx_rcm.h"
 #include "apm32f0xx_gpio.h" 
-
+#include "button.hpp"
+#include "logger.hpp"
 
 
 extern "C" void _init(void){};
@@ -25,9 +26,16 @@ int main(){
     GPIO_Config(GPIOE, &cfg);
     SysTick_Config(SystemCoreClock/1000);
     const uint32_t interval[3] = {500, 100, 50};
+    button_init();
+    uint32_t last_toggle = 0;
     while(1){
-        if(millis() >= interval[mode - 1]){
-            tms = 0;
+        if(button_pressed()){
+            ++mode;
+            if(mode > 3){ mode = 1; }
+        }
+        uint32_t interval_temp = interval[mode - 1];
+        if((millis() - last_toggle) >= interval_temp){
+            last_toggle += interval_temp;
             if(GPIO_ReadOutputBit(GPIOE, GPIO_PIN_6)){
                 GPIO_ClearBit(GPIOE, GPIO_PIN_6);
             }else{

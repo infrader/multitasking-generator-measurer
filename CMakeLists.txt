@@ -9,7 +9,7 @@ add_subdirectory(sdk)
 set(STARTUP ${CMAKE_SOURCE_DIR}/sdk/Libraries/Device/Geehy/APM32F0xx/Source/gcc/startup_apm32f072.S)
 set(LINKER ${CMAKE_SOURCE_DIR}/sdk/Libraries/Device/Geehy/APM32F0xx/Source/gcc/gcc_APM32F07xx8.ld)
 
-set(SOURCE ${CMAKE_SOURCE_DIR}/src/logger.cpp)
+set(SOURCE ${CMAKE_SOURCE_DIR}/src/logger.cpp ${CMAKE_SOURCE_DIR}/src/button.cpp)
 
 add_executable(run src/main.cpp ${STARTUP} ${SOURCE})
 target_include_directories(run PRIVATE ${CMAKE_SOURCE_DIR}/include)
