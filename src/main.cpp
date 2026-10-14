@@ -8,7 +8,7 @@
 extern "C" void _init(void){};
 
 static volatile uint32_t tms = 0;
-static volatile uint32_t mode = 1;
+volatile uint32_t mode = 1;
 extern "C" void SysTick_Handler(void){
     ++tms;
 };
@@ -29,10 +29,6 @@ int main(){
     button_init();
     uint32_t last_toggle = 0;
     while(1){
-        if(button_pressed()){
-            ++mode;
-            if(mode > 3){ mode = 1; }
-        }
         uint32_t interval_temp = interval[mode - 1];
         if((millis() - last_toggle) >= interval_temp){
             last_toggle += interval_temp;

@@ -11,6 +11,9 @@ ${SDK_ROOT}/APM32F0xx_StdPeriphDriver/src/apm32f0xx_tmr.c
 ${SDK_ROOT}/APM32F0xx_StdPeriphDriver/src/apm32f0xx_adc.c
 ${SDK_ROOT}/APM32F0xx_StdPeriphDriver/src/apm32f0xx_rtc.c
 ${SDK_ROOT}/APM32F0xx_StdPeriphDriver/src/apm32f0xx_pmu.c
+${SDK_ROOT}/APM32F0xx_StdPeriphDriver/src/apm32f0xx_syscfg.c
+${SDK_ROOT}/APM32F0xx_StdPeriphDriver/src/apm32f0xx_eint.c
+${SDK_ROOT}/APM32F0xx_StdPeriphDriver/src/apm32f0xx_misc.c
 ${SDK_ROOT}/Device/Geehy/APM32F0xx/Source/system_apm32f0xx.c
 )
 

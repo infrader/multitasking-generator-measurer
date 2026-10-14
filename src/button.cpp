@@ -1,10 +1,6 @@
 #include "button.hpp" 
 
-
-static bool button_state = true; // button pressed or unpressed
-static bool button_previous_state = true; // previous state
 static uint32_t last_state = 0; // time previous state
-static bool pressed_event = false; // button event
 static const uint32_t DEBOUNSE = 50; // debounce 50 ms
 
 void disable_tamper_pullup(void) {
@@ -18,38 +14,33 @@ void disable_tamper_pullup(void) {
 void button_init(void){
     disable_tamper_pullup();
     RCM_EnableAHBPeriphClock(RCM_AHB_PERIPH_GPIOA);
+    RCM_EnableAPB2PeriphClock(RCM_APB2_PERIPH_SYSCFG);
     GPIO_Config_T cfg;
+    EINT_Config_T eintConfig;
     GPIO_ConfigStructInit(&cfg);
     cfg.pin = GPIO_PIN_0 | GPIO_PIN_1;
     cfg.mode = GPIO_MODE_IN;
     cfg.pupd = GPIO_PUPD_PU;
     GPIO_Config(GPIOA, &cfg);
-};
+    SYSCFG_EINTLine(SYSCFG_PORT_GPIOA, SYSCFG_PIN_0);
+    eintConfig.line    =  EINT_LINE0;
+    eintConfig.lineCmd =  ENABLE;
+    eintConfig.mode    =  EINT_MODE_INTERRUPT;
+    eintConfig.trigger =  EINT_TRIGGER_FALLING;
+    EINT_Config(&eintConfig);
+    NVIC_EnableIRQRequest(EINT0_1_IRQn, 0x0f);
+}
 
-void button_poll(void) {
-    bool state = GPIO_ReadInputBit(GPIOA, GPIO_PIN_0); 
-    uint32_t now = millis();
-    if (state != button_previous_state) {
-        button_previous_state = state;
-        last_state = now;
-        return;
-    }
-    if (state != button_state) {
-        if ((now - last_state) >= DEBOUNSE) {
-            button_state = state;
-            if (!state) {
-                pressed_event = true;
-            }
+extern "C" void EINT0_1_IRQHandler(void){
+    if (EINT_ReadStatusFlag(EINT_LINE0) == SET){
+        EINT_ClearStatusFlag(EINT_LINE0);
+        uint32_t now = millis();
+        if((now - last_state) < DEBOUNSE){
+            return;
         }
+        last_state = now;
+        if (++mode > 3) mode = 1;
     }
 }
 
 
-bool button_pressed(void){
-    button_poll();
-    if(pressed_event){
-        pressed_event = false;
-        return true;
-    }
-    return false;
-};

@@ -4,8 +4,13 @@
 #include "apm32f0xx_gpio.h"
 #include "apm32f0xx_pmu.h"
 #include "apm32f0xx_rtc.h"
+#include "apm32f0xx_syscfg.h"
+#include "apm32f0xx_eint.h"
+#include "apm32f0xx_misc.h"
 #include <cstdint>
 
+
+extern volatile uint32_t mode;
 extern uint32_t millis(void);
 
 void button_init(void);
