@@ -34,10 +34,34 @@ void logger::logger_init(){
     USART_Enable(USART1);
 };
 
+<<<<<<< HEAD
 void logger::log_tx(const char* log){
     while(*log != '\0'){
         while(!USART_ReadStatusFlag(USART1, USART_FLAG_TXBE));
             USART_TxData(USART1, *log);
             ++log;
+=======
+void logger::log_tx(const char* log)
+{
+    while (*log != '\0')
+    {
+        while (USART_ReadStatusFlag(USART1, USART_FLAG_TXBE) == RESET);
+        USART_TxData(USART1, static_cast<uint16_t>(*log++));
+    }
+    while (USART_ReadStatusFlag(USART1, USART_FLAG_TXC) == RESET);
+}
+
+void logger::log_mode(uint32_t mode){
+    switch (mode)
+    {
+    case 1:
+        log_tx("Slow mode(1): 1000ms\r\n"); break;
+    case 2:
+        log_tx("Fast mode(2): 200ms\r\n"); break;
+    case 3:
+        log_tx("Fastest mode(3): 100ms\r\n"); break;
+    default:
+        break;
+>>>>>>> feature/uart-setup
     }
 };
