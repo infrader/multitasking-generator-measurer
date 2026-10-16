@@ -26,7 +26,9 @@ int main(){
     GPIO_Config(GPIOE, &cfg);
     SysTick_Config(SystemCoreClock/1000);
     const uint32_t interval[3] = {500, 100, 50};
+    uint32_t last_log_time{millis()}; 
     button_init();
+    logger::logger_init();
     uint32_t last_toggle = 0;
     while(1){
         uint32_t interval_temp = interval[mode - 1];
@@ -37,6 +39,10 @@ int main(){
             }else{
                 GPIO_SetBit(GPIOE, GPIO_PIN_5);
             }
+        }
+        if((millis() - last_log_time) >= 1000){
+            last_log_time = millis();
+            logger::log_mode(mode);
         }
     }
 } 
