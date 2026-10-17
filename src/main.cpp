@@ -3,6 +3,7 @@
 #include "apm32f0xx_gpio.h" 
 #include "button.hpp"
 #include "logger.hpp"
+#include "storage.hpp"
 
 
 extern "C" void _init(void){};
@@ -27,10 +28,14 @@ int main(){
     SysTick_Config(SystemCoreClock/1000);
     const uint32_t interval[3] = {500, 100, 50};
     uint32_t last_log_time{millis()}; 
+    storage_init();
     button_init();
     logger::logger_init();
     uint32_t last_toggle = 0;
     while(1){
+        if(FLAG_MODE_CHANGE){
+            save_mode(mode);
+        }
         uint32_t interval_temp = interval[mode - 1];
         if((millis() - last_toggle) >= interval_temp){
             last_toggle += interval_temp;

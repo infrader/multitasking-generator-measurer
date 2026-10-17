@@ -38,6 +38,7 @@ extern "C" void EINT0_1_IRQHandler(void){
         if((now - last_state) < DEBOUNSE){
             return;
         }
+        FLAG_MODE_CHANGE = true;
         last_state = now;
         if (++mode > 3) mode = 1;
     }

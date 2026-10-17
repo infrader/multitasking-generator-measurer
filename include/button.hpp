@@ -7,9 +7,10 @@
 #include "apm32f0xx_syscfg.h"
 #include "apm32f0xx_eint.h"
 #include "apm32f0xx_misc.h"
+#include "storage.hpp"
 #include <cstdint>
 
-
+extern volatile bool FLAG_MODE_CHANGE;
 extern volatile uint32_t mode;
 extern uint32_t millis(void);
 
