@@ -9,14 +9,16 @@
 extern "C" void _init(void){};
 
 static volatile uint32_t tms = 0;
-volatile uint32_t mode = 1;
+volatile uint8_t mode = 1;
+const uint32_t interval[3] = {500, 100, 50};
 extern "C" void SysTick_Handler(void){
     ++tms;
 };
 uint32_t millis(void){
     return tms;
 };
-int main(){
+
+void led_init(void){
     RCM_EnableAHBPeriphClock(RCM_AHB_PERIPH_GPIOE);
     GPIO_Config_T cfg;
     GPIO_ConfigStructInit(&cfg);
@@ -25,20 +27,27 @@ int main(){
     cfg.speed = GPIO_SPEED_2MHz;
     cfg.pupd = GPIO_PUPD_NO;
     GPIO_Config(GPIOE, &cfg);
+
+}
+void timer_init(void){
     SysTick_Config(SystemCoreClock/1000);
-    const uint32_t interval[3] = {500, 100, 50};
-    uint32_t last_log_time{millis()}; 
+}
+
+int main(){
+    led_init();
+    timer_init(); 
     storage_init();
     button_init();
     logger::logger_init();
+    //local
+    uint32_t last_log_time{millis()};
     uint32_t last_toggle = 0;
     while(1){
         if(FLAG_MODE_CHANGE){
             save_mode(mode);
         }
-        uint32_t interval_temp = interval[mode - 1];
-        if((millis() - last_toggle) >= interval_temp){
-            last_toggle += interval_temp;
+        if((millis() - last_toggle) >= interval[mode - 1]){
+            last_toggle += interval[mode - 1];
             if(GPIO_ReadOutputBit(GPIOE, GPIO_PIN_5)){
                 GPIO_ClearBit(GPIOE, GPIO_PIN_5);
             }else{

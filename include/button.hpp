@@ -11,7 +11,7 @@
 #include <cstdint>
 
 extern volatile bool FLAG_MODE_CHANGE;
-extern volatile uint32_t mode;
+extern volatile uint8_t mode;
 extern uint32_t millis(void);
 
 void button_init(void);
