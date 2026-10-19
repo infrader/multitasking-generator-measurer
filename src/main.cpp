@@ -10,7 +10,7 @@ extern "C" void _init(void){};
 
 static volatile uint32_t tms = 0;
 volatile uint8_t mode = 1;
-const uint32_t interval[3] = {500, 100, 50};
+static const uint32_t interval[3] = {500, 100, 50};
 extern "C" void SysTick_Handler(void){
     ++tms;
 };
